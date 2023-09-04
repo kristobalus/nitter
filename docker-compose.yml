@@ -37,6 +37,8 @@ services:
       timeout: 5s
       retries: 2
     user: "999:1000"
+    ports: 
+      - 6379:6379
     read_only: true
     security_opt:
       - no-new-privileges:true

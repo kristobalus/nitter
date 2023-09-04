@@ -9,7 +9,7 @@ import jester
 import types, config, prefs, formatters, redis_cache, http_pool, auth
 import views/[general, about]
 import routes/[
-  preferences, timeline, status, media, search, rss, list, debug,
+  preferences, timeline, status, media, search, rss, list, debug, twitter_api,
   unsupported, embed, resolver, router_utils]
 
 const instancesUrl = "https://github.com/zedeus/nitter/wiki/Instances"
@@ -54,6 +54,7 @@ createMediaRouter(cfg)
 createEmbedRouter(cfg)
 createRssRouter(cfg)
 createDebugRouter(cfg)
+createTwitterApiRouter(cfg)
 
 settings:
   port = Port(cfg.port)
@@ -108,3 +109,4 @@ routes:
   extend embed, ""
   extend debug, ""
   extend unsupported, ""
+  extend api, ""
