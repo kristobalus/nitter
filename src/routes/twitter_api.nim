@@ -151,7 +151,8 @@ proc createTwitterApiRouter*(cfg: Config) =
 
     get "/api/user/@id/tweets":
       let id = @"id"
-      let response = await getUserTweets(id)
+      let after = getCursor()
+      let response = await getUserTweets(id, after)
       resp Http200, { "Content-Type": "application/json" }, response
 
     get "/api/user/@id/replies":
