@@ -3,6 +3,7 @@
 # Read the version from package.json
 VERSION=1.0.1
 IMAGE=kristobalus/nitter:$VERSION
+LATEST=kristobalus/nitter:latest
 echo "building image $IMAGE using buildx for multi-arch..."
 
 docker buildx create --use --name buildx_instance --driver docker-container --bootstrap
@@ -12,6 +13,7 @@ docker buildx build -f ./Dockerfile \
 		--label "build-tag=build-artifact" \
 		--platform linux/amd64 \
 		-t $IMAGE \
+		-t $LATEST \
 		--push . || { echo "failed to build docker image"; exit 1; }
 
 # commented out to keep cached layers
