@@ -1,5 +1,6 @@
 // Node v18.15.0 / Deno / Bun...
 
+const fs = require('fs');
 const TW_CONSUMER_KEY = '3nVuSoBZnx6U4vzUxf5w'
 const TW_CONSUMER_SECRET = 'Bcs59EFbbsdF6Sl9Ng71smgStWEGwXXKSjYvPVt7qys'
 const TW_ANDROID_BASIC_TOKEN = `Basic ${btoa(TW_CONSUMER_KEY+':'+TW_CONSUMER_SECRET)}`
@@ -64,8 +65,8 @@ const getBearerToken = async () => {
     })).json())
 
     const account = subtasks.find(task => task.subtask_id === 'OpenAccount')?.open_account
-    console.log(JSON.stringify(account))
-
+    console.log(JSON.stringify([ account ]))
+    fs.writeFileSync('guest_accounts.json', JSON.stringify([ account ]))
     // If you get an object like below it is successful
     // {
     //     "user": {
