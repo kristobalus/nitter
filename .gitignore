@@ -10,6 +10,6 @@ nitter
 /public/css/style.css
 /public/md/*.html
 nitter.conf
-guest_accounts.json*
+guest_accounts.json
 dump.rdb
 .idea
