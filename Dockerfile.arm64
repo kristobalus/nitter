@@ -16,6 +16,7 @@ RUN nimble build -d:danger -d:lto -d:strip \
 FROM alpine:3.18
 WORKDIR /src/
 RUN apk --no-cache add pcre ca-certificates openssl1.1-compat
+COPY --from=nim /src/nitter/entrypoint.sh ./
 COPY --from=nim /src/nitter/nitter ./
 COPY --from=nim /src/nitter/nitter.example.conf ./nitter.conf
 COPY --from=nim /src/nitter/public ./public

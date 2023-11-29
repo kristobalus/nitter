@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Read the version from package.json
-VERSION=1.0.4
+VERSION=1.0.5
 IMAGE=kristobalus/nitter
 echo "building image $IMAGE using buildx for multi-arch..."
 
