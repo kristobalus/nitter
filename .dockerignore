@@ -2,5 +2,6 @@
 *.md
 LICENSE
 docker-compose.yml
+guest_accounts.json
 Dockerfile
 tests/
