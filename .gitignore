@@ -13,3 +13,4 @@ nitter.conf
 guest_accounts.json
 dump.rdb
 .idea
+fly.toml
