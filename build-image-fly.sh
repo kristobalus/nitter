@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Read the version from package.json
-VERSION=1.0.6-fly
+VERSION=1.0.8-fly
 IMAGE=kristobalus/nitter
 echo "building image $IMAGE using buildx..."
 
@@ -18,4 +18,4 @@ docker buildx build -f ./Dockerfile.fly \
 # docker buildx rm buildx_instance
 docker tag $IMAGE:$VERSION $IMAGE:latest-fly
 docker push $IMAGE:latest-fly
-docker image prune -f --filter label=build-tag=build-artifact
+# docker image prune -f --filter label=build-tag=build-artifact
