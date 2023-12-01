@@ -1,13 +1,13 @@
-# fly.toml app configuration file generated for api-nitter-3 on 2023-11-30T14:40:31+06:00
+# fly.toml app configuration file generated for api-nitter on 2023-12-01T12:47:09+06:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "api-nitter-3"
+app = "api-nitter"
 primary_region = "waw"
 
 [build]
-  image = "kristobalus/nitter:1.0.7-fly"
+  image = "kristobalus/nitter:1.1.0-fly"
 
 [env]
   NITTER_GUEST_ACCOUNTS_URL = "https://guest-keeper.fly.dev/guest-accounts"
