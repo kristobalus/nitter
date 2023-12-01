@@ -14,11 +14,13 @@ RUN nimble build -d:danger -d:lto -d:strip \
     && nimble md
 
 COPY entrypoint.sh .
+COPY supervisor.conf .
 
 FROM alpine:latest
 WORKDIR /src/
-RUN apk --no-cache add pcre ca-certificates
+RUN apk --no-cache add pcre ca-certificates redis supervisor
 COPY --from=nim /src/nitter/entrypoint.sh ./
+COPY --from=nim /src/nitter/supervisor.conf ./
 COPY --from=nim /src/nitter/nitter ./
 COPY --from=nim /src/nitter/nitter.example.conf ./nitter.conf
 COPY --from=nim /src/nitter/public ./public
@@ -27,4 +29,6 @@ RUN adduser -h /src/ -D -s /bin/sh nitter
 RUN chmod +x /src/entrypoint.sh
 RUN chown nitter /src/entrypoint.sh
 USER nitter
-ENTRYPOINT ["/src/entrypoint.sh"]
+
+# Initializing Redis server and Nitter
+CMD ["supervisord","-c","/src/supervisor.conf"]

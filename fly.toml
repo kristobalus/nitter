@@ -20,12 +20,6 @@ primary_region = "waw"
   min_machines_running = 0
   processes = ["app"]
 
-[[files]]
-  guest_path = "/config/nitter.conf"
-  local_path = ""
-  secret_name = ""
-  raw_value = "[Server]\nhostname = \"nitter.net\"  # for generating links, change this to your own domain/ip\ntitle = \"test\"\naddress = \"0.0.0.0\"\nport = 8080\nhttps = false  # disable to enable cookies when not using https\nhttpMaxConnections = 100\nstaticDir = \"./public\"\n\n[Cache]\nlistMinutes = 240  # how long to cache list info (not the tweets, so keep it high)\nrssMinutes = 10  # how long to cache rss queries\n# redisHost = \"127.0.0.1\"  # Change to \"nitter-redis\" if using docker-compose\nredisHost = \"fly-muddy-feather-6452.upstash.io\"\nredisPort = 6379\nredisPassword = \"79d56a12abd44c33939db0e7e56074dd\"\nredisConnections = 20  # minimum open connections in pool\nredisMaxConnections = 30\n# new connections are opened when none are available, but if the pool size\n# goes above this, they're closed when released. don't worry about this unless\n# you receive tons of requests per second\n\n[Config]\nhmacKey = \"secretkey\"  # random key for cryptographic signing of video urls\nbase64Media = false  # use base64 encoding for proxied media urls\nenableRSS = true  # set this to false to disable RSS feeds\nenableDebug = true  # enable request logs and debug endpoints (/.tokens)\nproxy = \"\"  # http/https url, SOCKS proxies are not supported\nproxyAuth = \"\"\ntokenCount = 10\n# minimum amount of usable tokens. tokens are used to authorize API requests,\n# but they expire after ~1 hour, and have a limit of 500 requests per endpoint.\n# the limits reset every 15 minutes, and the pool is filled up so there's\n# always at least `tokenCount` usable tokens. only increase this if you receive\n# major bursts all the time and don't have a rate limiting setup via e.g. nginx\n\n# Change default preferences here, see src/prefs_impl.nim for a complete list\n[Preferences]\ntheme = \"Nitter\"\nreplaceTwitter = \"nitter.net\"\nreplaceYouTube = \"piped.video\"\nreplaceReddit = \"teddit.net\"\nproxyVideos = true\nhlsPlayback = false\ninfiniteScroll = false\n"
-
 [[vm]]
   cpu_kind = "shared"
   cpus = 1
