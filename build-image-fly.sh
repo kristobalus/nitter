@@ -16,6 +16,7 @@ docker buildx build -f ./Dockerfile.fly \
 
 # commented out to keep cached layers
 # docker buildx rm buildx_instance
-docker tag $IMAGE:$VERSION $IMAGE:latest-fly
-docker push $IMAGE:latest-fly
+# docker tag $IMAGE:$VERSION $IMAGE:latest-fly
+# docker push $IMAGE:latest-fly
+
 docker image prune -f --filter label=build-tag=build-artifact
