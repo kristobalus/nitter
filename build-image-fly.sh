@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Read the version from package.json
-VERSION=1.1.0-fly
+VERSION=1.2.0-fly
 IMAGE=kristobalus/nitter
 echo "building image $IMAGE using buildx..."
 
