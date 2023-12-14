@@ -7,7 +7,7 @@ app = "api-nitter"
 primary_region = "waw"
 
 [build]
-  image = "kristobalus/nitter:1.1.0-fly"
+  image = "kristobalus/nitter:latest-fly"
 
 [env]
   NITTER_GUEST_ACCOUNTS_URL = "https://guest-keeper.fly.dev/guest-accounts"
