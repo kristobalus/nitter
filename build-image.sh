@@ -12,10 +12,9 @@ docker buildx build -f ./Dockerfile \
 		--label "build-tag=build-artifact" \
 		--platform linux/amd64 \
 		-t $IMAGE:$VERSION \
+		-t $IMAGE:latest \
 		--push . || { echo "failed to build docker image"; exit 1; }
 
 # commented out to keep cached layers
 # docker buildx rm buildx_instance
-docker tag $IMAGE:$VERSION $IMAGE:latest
-docker push $IMAGE:latest
 docker image prune -f --filter label=build-tag=build-artifact
