@@ -12,7 +12,7 @@ services:
     entrypoint: |
       /bin/sh -c '
         cp /config/nitter.conf /src/nitter.conf
-        wget -O /src/guest_accounts.json $NITTER_GUEST_ACCOUNTS_URL
+        wget -O /src/guest_accounts.json $NITTER_GUEST_ACCOUNTS_URL || exit 1
         ./nitter
       '
     ports:
