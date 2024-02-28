@@ -1,9 +1,11 @@
 #!/bin/sh
 
-echo "$NITTER_GUEST_ACCOUNTS_URL"
-# cp /config/nitter.conf /src/nitter.conf
+cp /config/nitter.conf /src/nitter.conf
 cat /src/nitter.conf
-wget -O /src/guest_accounts.json "$NITTER_GUEST_ACCOUNTS_URL"
+echo $NITTER_GUEST_ACCOUNTS > /src/guest_accounts.json
+
+# echo "NITTER_GUEST_ACCOUNTS_URL=$NITTER_GUEST_ACCOUNTS_URL"
+# wget -O /src/guest_accounts.json "$NITTER_GUEST_ACCOUNTS_URL" || exit 1
 
 # Redis host and port
 MAX_ATTEMPTS=30  # 5 minutes with 10-second intervals

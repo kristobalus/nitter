@@ -1,20 +1,14 @@
-version: '3.8'
+version: "3.8"
 
 services:
   nitter-redis:
     image: redis:latest
 
   nitter:
-    image: kristobalus/nitter:latest
+    image: kristobalus/nitter:latest-fly
     platform: "linux/amd64"
     environment:
-      NITTER_GUEST_ACCOUNTS_URL: "${NITTER_GUEST_ACCOUNTS_URL}"
-    entrypoint: |
-      /bin/sh -c '
-        cp /config/nitter.conf /src/nitter.conf
-        wget -O /src/guest_accounts.json $NITTER_GUEST_ACCOUNTS_URL || exit 1
-        ./nitter
-      '
+      NITTER_GUEST_ACCOUNTS: "${NITTER_GUEST_ACCOUNTS}"
     ports:
       - "8080:8080"
     depends_on:

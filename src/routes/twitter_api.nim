@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
-import json, asyncdispatch, options, uri
+import json, asyncdispatch, options, uri, sugar
 import times
 import jester
 import router_utils
@@ -9,6 +9,9 @@ import httpclient, strutils
 import sequtils
 
 export api
+
+proc getQuery2*(request: Request; name: string): Query =
+  initQuery(params(request), name=name)  
 
 proc videoToJson*(t: Video): JsonNode =
   result = newJObject()
@@ -81,12 +84,12 @@ proc getUserTweetsJson*(id: string): Future[JsonNode] {.async.} =
 
   result = response
 
-proc searchTimeline*(query: Query; after=""): Future[string] {.async.} =
+proc searchTimeline*(query: Query; after=""; count=20): Future[string] {.async.} =
   let q = genQueryParam(query)
   var
     variables = %*{
       "rawQuery": q,
-      "count": 20,
+      "count": count,
       "product": "Latest",
       "withDownvotePerspective": false,
       "withReactionsMetadata": false,
@@ -94,7 +97,7 @@ proc searchTimeline*(query: Query; after=""): Future[string] {.async.} =
     }
   if after.len > 0:
     variables["cursor"] = % after
-  let url = graphSearchTimeline ? {"variables": $variables, "features": gqlFeatures}
+  let url = graphSearchTimeline ? {"variables": $variables, "features": gqlFeatures}  
   result = await fetchRaw(url, Api.search)
 
 proc getUserTweets*(id: string; after=""): Future[string] {.async.} =
@@ -104,6 +107,13 @@ proc getUserTweets*(id: string; after=""): Future[string] {.async.} =
     variables = userTweetsVariables % [id, cursor]
     params = {"variables": variables, "features": gqlFeatures}
   result = await fetchRaw(graphUserTweets ? params, Api.userTweets)
+
+proc getUserById*(id: string): Future[string] {.async} =   
+  if id.len == 0 or id.any(c => not c.isDigit): return
+  let
+    variables = """{"rest_id": "$1"}""" % id
+    params = {"variables": variables, "features": gqlFeatures}
+  result = await fetchRaw(graphUserById ? params, Api.userRestId)  
 
 proc getUserReplies*(id: string; after=""): Future[string] {.async.} =
   if id.len == 0: return
@@ -137,21 +147,33 @@ proc createTwitterApiRouter*(cfg: Config) =
       let username = @"username"
       let response = await getUserProfileJson(username)
       respJson response
-
-    # get "/api/user/@id/tweets":
-    #  let id = @"id"
-    #  let response = await getUserTweetsJson(id)
-    #  respJson response
+  
+    get "/api/user/@id/profile":
+      let id = @"id"
+      let response = await getUserById(id)
+      resp Http200, { "Content-Type": "application/json" }, response
 
     get "/api/user/@username/timeline":
       let username = @"username"
       let query = Query(fromUser: @[username])
-      let response = await searchTimeline(query)
+      let after = getCursor()
+      let count = parseInt(request.params.getOrDefault("count", "20"))      
+      let response = await searchTimeline(query, after, count)
+      resp Http200, { "Content-Type": "application/json" }, response
+
+    get "/api/@name/timeline":            
+      let names = getNames(@"name")
+      var query = request.getQuery2(@"name")
+      let after = getCursor()      
+      let count = parseInt(request.params.getOrDefault("count", "20"))
+      if names.len != 1:
+        query.fromUser = names
+      let response = await searchTimeline(query, after, count)
       resp Http200, { "Content-Type": "application/json" }, response
 
     get "/api/user/@id/tweets":
       let id = @"id"
-      let after = getCursor()
+      let after = getCursor()      
       let response = await getUserTweets(id, after)
       resp Http200, { "Content-Type": "application/json" }, response
 
