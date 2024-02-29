@@ -2,9 +2,17 @@
 import requests
 import base64
 import json
+import sys
 
-username = "esther_mcc93968"
-password = "er68Bmi9o"
+# Check if the correct number of arguments are passed
+if len(sys.argv) != 3:
+    print("Usage: twitter_login.py <username> <password>")
+    sys.exit(1)
+
+# The first argument sys.argv[0] is the script name, so you start from sys.argv[1]
+username = sys.argv[1]
+password = sys.argv[2]
+
 TW_CONSUMER_KEY = "3nVuSoBZnx6U4vzUxf5w"
 TW_CONSUMER_SECRET = "Bcs59EFbbsdF6Sl9Ng71smgStWEGwXXKSjYvPVt7qys"
 TW_ANDROID_BASIC_TOKEN = "Basic {token}".format(
